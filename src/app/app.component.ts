@@ -17,12 +17,10 @@ import {apiSearchURL,googleMapApiKey,apiFetchAllURL} from "./common";
 export class AppComponent implements OnInit {
   title = 'Food Truck';
   filterData:any;
-
+  filterSelected:any;
   @ViewChild(AgmMap)
   public agmMap: AgmMap
-  
   private searchTerms = new Subject<string>();
-  
   fetchAllData:any;
 
   constructor(private restService: RestService,private spinner: NgxSpinnerService){
@@ -34,6 +32,8 @@ export class AppComponent implements OnInit {
 	              if (data) {
 	                  if (data.length > 0) {
 	                	  this.spinner.hide();
+	                      this.filterSelected = [];
+	                	  this.fetchAllData = [];
 	                      this.filterData = data;
 	                  }
 	                  else{
@@ -49,26 +49,6 @@ export class AppComponent implements OnInit {
 				  }
 	          });  
 	    });
-	  
-	  this.spinner.show();
-  	this.restService.getAPICall(apiFetchAllURL, data => {
-            if (data) {
-                if (data.length > 0) {
-              	  this.spinner.hide();
-                    this.fetchAllData = data;
-                }
-                else{
-                    alert("no data fund");
-                    this.filterData = [];
-              	  this.spinner.hide();
-                }
-            }
-            else{
-          	  alert("no data fund");
-          	  this.filterData = [];
-          	  this.spinner.hide();
-			  }
-        });  
   	
   }
   onMouseOver(infoWindow, gm) {
@@ -86,11 +66,34 @@ export class AppComponent implements OnInit {
 	  this.searchTerms.next(term);
   }
   getFilterData(filter){
-	  alert(filter);
+	  this.filterData = [];
+      this.filterSelected = [filter];
+	  this.fetchAllData = [filter];
   }
   
   ngAfterViewInit() {
-	  this.agmMap.triggerResize();
+	  
+		this.spinner.show();
+	  	this.restService.getAPICall(apiFetchAllURL, data => {
+	            if (data) {
+	                if (data.length > 0) {
+	              	  this.spinner.hide();
+	                    this.fetchAllData = data;
+	                }
+	                else{
+	                    alert("no data fund");
+	                    this.filterData = [];
+	              	  this.spinner.hide();
+	                }
+	            }
+	            else{
+	          	  alert("no data fund");
+	          	  this.filterData = [];
+	          	  this.spinner.hide();
+				  }
+	        });
+	  	this.agmMap.triggerResize();
+		  
   }
   ngOnInit(): void {
   }

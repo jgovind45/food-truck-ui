@@ -101,6 +101,13 @@ agm-map {
     </li>
   </ul>
 </div>
+	<div *ngFor="let fs of filterSelected">
+		LATITUDE  : {{fs.latitude}}<br> 
+		LONGITUDE : {{fs.longitude}}<br>
+		APPLICANT : {{fs.applicant}}<br>
+		ADDRESS   : {{fs.address}}<br>
+		FOOD-ITEMS: {{fs.fooditems}}
+	</div>
 </div>
 
 <!-- https://stackoverflow.com/questions/46541611/agm-marker-onmouseover-open-agm-info-window -->
@@ -117,6 +124,6 @@ agm-map {
                 <a class="btn btn-attention pull-right"><i class="fa fa-angle-double-right"></i></a>
             </div>
         </agm-info-window>
-    </agm-marker>
-
+</agm-marker>
+</agm-map>
     
